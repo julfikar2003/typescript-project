@@ -5,7 +5,10 @@ const About = () => {
   const price = 999;
 const [Count,setCount] = useState(0);
 const increment = () => {setCount(Count + 1);}
-const decrement = () =>{setCount(Count - 1);}
+const decrement = () =>{
+  if(Count>0)
+    {setCount(Count - 1);}
+}
 const reset = () => {setCount(0);}
 const totalPrice = Count * price;
 
@@ -13,14 +16,20 @@ const totalPrice = Count * price;
 const price1 = 99;
 const [Count1,setCount1] = useState(0);
 const increment1 = () => {setCount1(Count1 + 1);}
-const decrement1 = () =>{setCount1(Count1 - 1);}
+const decrement1 = () =>{
+  if(Count1>0){
+  setCount1(Count1 - 1);}
+}
 const reset1 = () => {setCount1(0);};
 const totalPrice1 = Count1 * price1;
 //3
 const price2 = 66;
 const [Count2,setCount2] = useState(0);
 const increment2 = () => {setCount2(Count2 + 1);}
-const decrement2 = () =>{setCount2(Count2 - 1);}
+const decrement2 = () =>{
+  if(Count2>0){
+  setCount2(Count2 - 1);}
+}
 const reset2 = () => {setCount2(0);};
 const totalPrice2 = Count2 * price2;
 

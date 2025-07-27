@@ -13,6 +13,7 @@ import DetailsD from "../pages/DetailsD";
 import Contact from "../pages/Contact";
 import Jobs from "../pages/Jobs";
 import PressKit from "../pages/PressKit";
+import Register from "../pages/Register";
 
 
 export const routes = createBrowserRouter([
@@ -31,6 +32,10 @@ export const routes = createBrowserRouter([
             {
                 path: "/about",
                 element: <About />
+            },
+            {
+                path: "/register",
+                element: <Register />
             },
             {
                 path: "/login",

@@ -1,56 +1,73 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
-import { auth } from "../firebase";
-import {  useSignInWithEmailAndPassword, } from 'react-firebase-hooks/auth';
-import Toast from "../Components/Toast";
+import React, { useState } from 'react'
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import Toast from '../Components/Toast';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router';
 
-const Login = () => {
- const [formData, setFormData] = useState({});
- const [loading, setLoading] = useState(false);
- const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+const Register = () => {
+    const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const navigate = useNavigate();
 const [
-  signInWithEmailAndPassword,
-  user,
+  createUserWithEmailAndPassword,
 
   error,
-] = useSignInWithEmailAndPassword(auth);
+] = useCreateUserWithEmailAndPassword(auth);
 
- const changeHandeler =(e)=>{
-const {name,value}=e.target;
-setFormData({...formData,[name]:value})
- }
-  const handleSubmit = async (e) => {
+const changeHandeler = (e)=>{
+    const {name,value}=e.target;
+    setFormData({...formData,[name]:value})
+}
+console.log(formData);
+
+const handleSubmit = async (e)=>{
     e.preventDefault();
-    console.log(formData)
-      setLoading(true);
-    const response = await signInWithEmailAndPassword(formData.email,formData.password);
-    const {accessToken}=response.user
-  
-    console.log(response);
-    if(accessToken){
-
-      localStorage.setItem('token',accessToken);
-      navigate('/');
-      setLoading(false);
-      return<Toast/>
+    setLoading(true);
+    const response = await createUserWithEmailAndPassword(formData.email,formData.password);
+    if(response.user.accessToken){
+        localStorage.setItem('token',response.user.accessToken);
+        navigate('/');
+        setLoading(false);
+        return<Toast/>
     }
-    setLoading(false);
-    
-  };
-
+}
   return (
+    <div>
     
-
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-    
+       {
+      error && <div role="alert" className="alert alert-error">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <span>Error! Something went wrong. please try again</span>
+</div>
+    }
 
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Login to Your Account
+          Register to Your Account
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
+        <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={changeHandeler}
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="your Name"
+              required
+            />
+          </div>
+        
+         <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
             </label>
@@ -65,6 +82,7 @@ setFormData({...formData,[name]:value})
               required
             />
           </div>
+          
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -82,7 +100,7 @@ setFormData({...formData,[name]:value})
             />
           </div>
 
-              <div className="flex items-center justify-between">
+           <div className="flex items-center justify-between">
             <label className="flex items-center text-sm text-gray-600">
               <input
                 type="checkbox"
@@ -96,7 +114,6 @@ setFormData({...formData,[name]:value})
               Forgot password?
             </a>
           </div>
-
          
 
           <button
@@ -112,7 +129,8 @@ setFormData({...formData,[name]:value})
       
       </div>
     </div>
-  );
-};
+    </div>
+  )
+}
 
-export default Login;
+export default Register

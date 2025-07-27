@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 const Navber = () => {
   return (
     <div>
-      <div className="navbar bg-red-500">
+      <div className="navbar  bg-gray-900 text-cyan-500">
 
   <div className="navbar-start">
-    <div className="dropdown">
+    <div className="dropdown bg-black-500">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,6 +28,7 @@ const Navber = () => {
         <li><Link to="/">Homepage</Link></li>
         <li><Link to="/portfolio">Portfolio</Link></li>
         <li><Link to="/about">About</Link></li>
+        <li><Link to="/register">Register</Link></li>
         <li><Link to="/login">Login</Link></li>
       </ul>
     </div>
