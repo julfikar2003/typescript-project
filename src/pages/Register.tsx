@@ -1,11 +1,21 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import Toast from '../Components/Toast';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router';
 
 const Register = () => {
-    const [formData, setFormData] = useState({});
+
+     interface LoginFormData {
+      name: string;
+      email: string;
+      password: string;
+    }
+    
+    const [formData, setFormData] = useState<LoginFormData>({
+      name: "",
+      email: "",
+      password: ""
+    });
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -16,22 +26,27 @@ const [
   error,
 ] = useCreateUserWithEmailAndPassword(auth);
 
-const changeHandeler = (e)=>{
+const changeHandeler = (e:React.ChangeEvent<HTMLInputElement>)=>{
     const {name,value}=e.target;
     setFormData({...formData,[name]:value})
 }
 console.log(formData);
 
-const handleSubmit = async (e)=>{
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     setLoading(true);
-    const response = await createUserWithEmailAndPassword(formData.email,formData.password);
-    if(response.user.accessToken){
-        localStorage.setItem('token',response.user.accessToken);
-        navigate('/');
-        setLoading(false);
-        return<Toast/>
+    try {
+    const response = await createUserWithEmailAndPassword(formData.email, formData.password);
+    if (response && response.user) {
+      const accessToken = await response.user.getIdToken();
+      localStorage.setItem("token", accessToken);
+      navigate("/");
     }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
 }
   return (
     <div>
